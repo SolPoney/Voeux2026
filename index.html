@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vœux 2026 - UNANIMES</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Luciole", "Segoe UI", Tahoma, Helvetica, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #0a0e27 0%,
+          #1a1a3e 50%,
+          #0a0e27 100%
+        );
+        color: #c8c3bc;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+      }
+      .fireworks-container {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        background: radial-gradient(
+            ellipse at 20% 50%,
+            rgba(255, 50, 100, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 80% 80%,
+            rgba(0, 200, 255, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 40% 20%,
+            rgba(255, 150, 0, 0.1) 0%,
+            transparent 50%
+          );
+        animation: fireflash 3s ease-in-out infinite;
+      }
+      .particle {
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      @keyframes fireflash {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 0.8;
+        }
+      }
+      @keyframes burst {
+        0% {
+          transform: translate(0, 0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(var(--tx), var(--ty)) scale(0.1);
+          opacity: 0;
+        }
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+      @keyframes glow {
+        0%,
+        100% {
+          text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+        50% {
+          text-shadow: 0 0 30px rgba(0, 212, 255, 1),
+            0 0 50px rgba(255, 150, 0, 0.8);
+        }
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+      .header {
+        text-align: center;
+        padding: 15px;
+        background: rgba(26, 26, 26, 0.95);
+        font-size: 14px;
+        border-bottom: 1px solid rgba(0, 120, 215, 0.3);
+        position: relative;
+        z-index: 10;
+        backdrop-filter: blur(10px);
+      }
+      .header a {
+        color: #00d4ff;
+        text-decoration: none;
+        transition: all 0.3s;
+        font-weight: 500;
+      }
+      .header a:hover {
+        color: #00f5ff;
+        text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+      }
+      .container {
+        width: 100%;
+        max-width: 650px;
+        margin: 30px auto;
+        background: rgba(33, 33, 33, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
+          0 0 40px rgba(0, 200, 255, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        overflow: hidden;
+        position: relative;
+        z-index: 10;
+        border: 1px solid rgba(0, 200, 255, 0.3);
+        backdrop-filter: blur(20px);
+        animation: slideIn 0.8s ease-out;
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .image-wrapper {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        height: 300px;
+        cursor: pointer;
+      }
+      .image-wrapper img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+      .image-wrapper:hover img {
+        transform: scale(1.08) rotate(1deg);
+      }
+      /* Overlay interactif sur l'image */
+      .image-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 212, 255, 0.08);
+        opacity: 0;
+        transition: opacity 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: #00f5ff;
+        font-weight: bold;
+        text-shadow: 0 0 10px rgba(0, 245, 255, 0.8);
+        pointer-events: none;
+      }
+      .image-wrapper:hover .image-overlay {
+        opacity: 1;
+      }
+      .content {
+        padding: 40px;
+        background: linear-gradient(
+          135deg,
+          rgba(33, 33, 33, 0.98) 0%,
+          rgba(40, 40, 60, 0.98) 100%
+        );
+        position: relative;
+      }
+      .surprise-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #ff9600 0%, #ff3264 100%);
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 700;
+        animation: pulse 2s ease-in-out infinite;
+        cursor: pointer;
+        box-shadow: 0 0 20px rgba(255, 150, 0, 0.5);
+        transition: all 0.3s;
+      }
+      .surprise-badge:hover {
+        transform: scale(1.2);
+        box-shadow: 0 0 40px rgba(255, 150, 0, 0.8);
+      }
+      h1 {
+        font-size: 32px;
+        text-align: center;
+        background: linear-gradient(
+          135deg,
+          #00d4ff 0%,
+          #0078d7 50%,
+          #00f5ff 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 10px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        animation: glow 3s ease-in-out infinite;
+      }
+      .subtitle {
+        font-size: 24px;
+        margin-bottom: 25px;
+        text-align: center;
+        color: #00f5ff;
+        animation: float 3s ease-in-out infinite;
+        font-weight: 600;
+      }
+      p {
+        font-size: 16px;
+        line-height: 1.8;
+        text-align: justify;
+        margin-bottom: 18px;
+        color: rgba(200, 195, 188, 0.95);
+        transition: all 0.3s;
+      }
+      p:hover {
+        color: #fff;
+        transform: translateX(3px);
+      }
+      .quote {
+        font-style: italic;
+        color: #fff;
+        text-align: center;
+        font-size: 18px;
+        margin: 35px 0;
+        padding: 25px;
+        background: linear-gradient(
+          135deg,
+          rgba(0, 120, 215, 0.15) 0%,
+          rgba(0, 200, 255, 0.15) 100%
+        );
+        border-left: 5px solid #00d4ff;
+        border-radius: 8px;
+        border-right: 1px solid rgba(0, 200, 255, 0.3);
+        box-shadow: 0 4px 15px rgba(0, 200, 255, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+        font-weight: 500;
+        position: relative;
+      }
+      .quote:hover {
+        box-shadow: 0 8px 25px rgba(0, 200, 255, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        transform: translateX(5px) scale(1.02);
+      }
+      /* Bouton caché */
+      .hidden-button {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        opacity: 0;
+        transition: all 0.3s;
+      }
+      .hidden-button:hover {
+        opacity: 1;
+      }
+      .hidden-button.top-left {
+        top: 10px;
+        left: 10px;
+      }
+      .hidden-button.top-right {
+        top: 10px;
+        right: 10px;
+      }
+      .hidden-button.bottom-left {
+        bottom: 10px;
+        left: 10px;
+      }
+      .hidden-button.bottom-right {
+        bottom: 10px;
+        right: 10px;
+      }
+      .hidden-button button {
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #00d4ff 0%, #0078d7 100%);
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+        transition: all 0.3s;
+        font-weight: bold;
+      }
+      .hidden-button button:hover {
+        transform: scale(1.3);
+        box-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+      }
+      .buttons-group {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 35px;
+      }
+      .button {
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .button a {
+        display: inline-block;
+        text-decoration: none;
+        color: #fff;
+        background: linear-gradient(135deg, #0078d7 0%, #00a4ef 100%);
+        padding: 15px 32px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 6px 20px rgba(0, 120, 215, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(0, 200, 255, 0.5);
+        position: relative;
+        overflow: hidden;
+      }
+      .button a::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+      .button a:hover::before {
+        left: 100%;
+      }
+      .button a:hover {
+        background: linear-gradient(135deg, #106ebe 0%, #00d4ff 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(0, 200, 255, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      }
+      .button a:active {
+        transform: translateY(-1px);
+      }
+      .button.green a {
+        background: linear-gradient(135deg, #28a745 0%, #2ecc71 100%);
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        border-color: rgba(46, 204, 113, 0.5);
+      }
+      .button.green a:hover {
+        background: linear-gradient(135deg, #218838 0%, #27ae60 100%);
+        box-shadow: 0 12px 30px rgba(46, 204, 113, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      }
+      /* Modal anecdote */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        animation: fadeIn 0.3s;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .modal-content {
+        background: linear-gradient(135deg, #1a1a3e 0%, #0a0e27 100%);
+        margin: 5% auto;
+        padding: 30px;
+        border: 2px solid #00d4ff;
+        border-radius: 20px;
+        width: 80%;
+        max-width: 560px;
+        text-align: center;
+        box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+        animation: slideUp 0.4s ease-out;
+        position: relative;
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      .modal-content h2 {
+        color: #00f5ff;
+        font-size: 28px;
+        margin-bottom: 12px;
+        animation: glow 2s ease-in-out infinite;
+      }
+      .modal-content p {
+        color: #c8c3bc;
+        font-size: 16px;
+        margin-bottom: 18px;
+      }
+      .close {
+        color: #00d4ff;
+        position: absolute;
+        right: 18px;
+        top: 12px;
+        font-size: 26px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .close:hover {
+        color: #00f5ff;
+        transform: rotate(90deg);
+      }
+      .found-counter {
+        position: absolute;
+        left: 18px;
+        top: 14px;
+        color: #c8c3bc;
+        font-size: 13px;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .confetti {
+        position: fixed;
+        pointer-events: none;
+      }
+      @media (max-width: 600px) {
+        .container {
+          margin: 15px;
+          border-radius: 15px;
+        }
+        .content {
+          padding: 25px;
+        }
+        h1 {
+          font-size: 26px;
+        }
+        .subtitle {
+          font-size: 20px;
+        }
+        p {
+          font-size: 15px;
+        }
+        .quote {
+          font-size: 16px;
+          padding: 18px;
+        }
+        .surprise-badge {
+          font-size: 10px;
+          padding: 6px 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="fireworks-container"
+      id="fireworksContainer"
+      aria-hidden="true"
+    ></div>
+
+    <div class="header">
+      <a href="https://solponey.github.io/Voeux-2026/" target="_blank">
+        Si vous ne pouvez pas visualiser ce message, cliquez ici pour le lire
+        dans votre navigateur.
+      </a>
+    </div>
+
+    <div class="container" id="card">
+      <!-- Image interactive avec overlay -->
+      <div
+        class="image-wrapper"
+        onclick="triggerSurprise()"
+        role="button"
+        aria-label="Image interactive — cliquez"
+      >
+        <img src="Images/carte-voeux.png" alt="Carte de Vœux UNANIMES 2026" />
+        <div class="image-overlay">👆 Cliquez-moi ! 🎉</div>
+      </div>
+
+      <div class="content">
+        <!-- Badge surprise qui pulsent -->
+        <div
+          class="surprise-badge"
+          onclick="showAnecdote('intro')"
+          title="Cliquez ici !"
+          role="button"
+          aria-label="Badge surprise"
+        >
+          ✨ SURPRISE ✨
+        </div>
+
+        <!-- Boutons cachés aux coins -> ouvrent anecdotes -->
+        <div class="hidden-button top-left" aria-hidden="false">
+          <button aria-label="Anecdote 1 — Histoire" onclick="showAnecdote(0)">
+            🎈
+          </button>
+        </div>
+        <div
+          class="hidden-button top-right"
+          aria-label="Anecdote 2 — Surdicécité"
+        >
+          <button onclick="showAnecdote(1)">🎊</button>
+        </div>
+        <div
+          class="hidden-button bottom-left"
+          aria-label="Anecdote 3 — Malentendants"
+        >
+          <button onclick="showAnecdote(2)">🎁</button>
+        </div>
+        <div
+          class="hidden-button bottom-right"
+          aria-label="Anecdote 4 — Accessibilité"
+        >
+          <button onclick="showAnecdote(3)">⭐</button>
+        </div>
+
+        <h1>Vœux 2026</h1>
+        <h1 class="subtitle">UNANIMES</h1>
+
+        <p>
+          Au nom de toute l'équipe d'UNANIMES, nous vous souhaitons une année
+          2026 pleine de succès, de sérénité et d'épanouissement.
+        </p>
+
+        <p>
+          L'année 2025 a été riche en actions et en réalisations : grâce à votre
+          engagement, nous avons accompli énormément pour faire avancer la cause
+          qui nous réunit. Aujourd'hui, une nouvelle année s'ouvre, pleine de
+          défis et d'opportunités pour poursuivre notre mission.
+        </p>
+
+        <p>
+          Ensemble, restons solidaires dans nos combats pour promouvoir les
+          droits et l'inclusion des sourds, malentendants, sourdaveugles et de
+          leurs familles, ainsi que plus largement des personnes handicapées et
+          de leurs proches. Chaque effort, chaque geste compte.
+        </p>
+
+        <p>
+          Merci pour votre engagement continu et votre précieux soutien.
+          Continuons à œuvrer main dans la main pour construire un avenir
+          toujours plus inclusif et accessible.
+        </p>
+
+        <p class="quote">
+          « Seuls, nous pouvons faire si peu ; ensemble, nous pouvons faire
+          beaucoup. » — Helen Keller
+        </p>
+
+        <div class="buttons-group">
+          <div class="button">
+            <a href="https://www.unanimes.fr" target="_blank"
+              >✨ Visitez notre site</a
+            >
+          </div>
+
+          <div class="button green">
+            <a
+              href="https://www.helloasso.com/associations/unanimes/adhesions/adhesion"
+              target="_blank"
+            >
+              🚀 Adhérez à UNANIMES
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Anecdote -->
+    <div
+      id="surpriseModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+    >
+      <div class="modal-content" role="document">
+        <div class="found-counter" id="foundCounter">0 / 4 trouvés</div>
+        <span class="close" aria-label="Fermer" onclick="closeAnecdote()"
+          >&times;</span
+        >
+        <h2 id="modalTitle">Surprise</h2>
+        <p id="modalText">Contenu...</p>
+        <p
+          id="modalSource"
+          style="font-size: 13px; color: #9fbfdc; margin-top: 12px"
+        ></p>
+      </div>
+    </div>
+
+    <script>
+      function createFireworks() {
+        const container = document.getElementById("fireworksContainer");
+        const colors = ["#ff3264", "#00d4ff", "#ff9600", "#00ff88", "#ff00ff"];
+        function createFirework(x, y) {
+          for (let i = 0; i < 50; i++) {
+            const particle = document.createElement("div");
+            particle.className = "particle";
+            const size = Math.random() * 4 + 2;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const angle = (i / 50) * Math.PI * 2;
+            const velocity = Math.random() * 300 + 200;
+            const tx = Math.cos(angle) * velocity;
+            const ty = Math.sin(angle) * velocity;
+            particle.style.left = x + "px";
+            particle.style.top = y + "px";
+            particle.style.width = size + "px";
+            particle.style.height = size + "px";
+            particle.style.backgroundColor = color;
+            particle.style.boxShadow = `0 0 ${size * 2}px ${color}`;
+            particle.style.setProperty("--tx", tx + "px");
+            particle.style.setProperty("--ty", ty + "px");
+            particle.style.animation = `burst ${
+              Math.random() * 1 + 0.8
+            }s ease-out forwards`;
+            container.appendChild(particle);
+            setTimeout(() => particle.remove(), 2000);
+          }
+        }
+        setInterval(() => {
+          const x = Math.random() * window.innerWidth;
+          const y = Math.random() * window.innerHeight * 0.6;
+          createFirework(x, y);
+        }, 600);
+      }
+
+      // Anecdotes (remplacez / complétez au besoin)
+      const anecdotes = [
+        {
+          id: 0,
+          title: "Une histoire de langue",
+          text: "Beaucoup de gens pensent que la langue des signes est universelle… mais ce n’est pas le cas ! Chaque pays, et parfois même chaque région, a ses propres signes. Il existe une langue des signes bretonne. Cette diversité montre combien les langues des signes sont riches et vivantes, et combien il est important de les apprendre et de les respecter.  En France, la reconnaissance et l’enseignement de la LSF ont connu de grandes avancées. En 1991, la loi Fabius a favorisé le choix d’une éducation bilingue pour les enfants sourds, combinant la LSF et le français écrit ou oral, mettant fin à l’interdiction de la LSF en cours depuis le congrès de Milan. La loi du 11 février 2005 reconnaît officiellement la LSF comme « langue à part entière ». Aujourd’hui, de nombreux instituts et associations, publics ou privés, ont réintégré la LSF dans leur enseignement. Depuis 2008, la LSF est également proposée comme option au baccalauréat, permettant ainsi aux élèves de se former et de valoriser cette langue dans leur parcours scolaire.",
+        },
+        {
+          id: 1,
+          title:
+            "Vous connaissez tous Helen Keller, mais connaissez-vous Anne Sullivan ? ",
+          text: `Anne Sullivan, célèbre éducatrice, a été la guide et l'amie de Helen Keller, une jeune fille sourdaveugle, pendant 49 ans. Née en 1866, Anne surmonte de nombreux défis dès son enfance, dont des problèmes oculaires et la perte de son petit frère.
+
+            Diplômée de l'école pour aveugles Perkins en 1886, elle devient la professeure d’Helen Keller en 1887. Dès les premières semaines, elle développe une méthode révolutionnaire : épeler les mots dans la paume de la main de Keller, associant le tactile à la signification des objets. Le 5 avril 1887, Helen comprend pour la première fois le mot "water" sous ses doigts, un tournant majeur dans son accès au langage.
+
+            Au fil des années, Anne Sullivan enseigne à Helen la langue, le braille, et bien plus encore, transformant une enfant isolée en une femme capable de communiquer et de contribuer à la société. Aujourd'hui, si Helen Keller est une icône, c'est surtout grâce à Anne Sullivan.`,
+        },
+        {
+          id: 2,
+          title: "Une astuce de couple",
+          text: `Un couple de sourds fait un road trip sur une longue distance. Il se fait très tard dans la nuit et ils décident de s'enregistrer dans un hôtel pour la nuit. Ils s'enregistrent, montent dans leur chambre et commencent à s'installer lorsque le mari réalise qu'il a laissé quelque chose dans la voiture qu'il doit aller chercher. Il descend en courant à sa voiture et récupère ses affaires. Il réalise soudainement qu'il ne sait plus quelle est sa chambre. Il réfléchit un instant, puis ça lui revient. Il remonte dans la voiture et commence à klaxonner. BEEP BEEP BEEP. Encore et encore. De nombreuses lumières de l'hôtel s'allument alors que les personnes entendantes, agacées, se réveillent pour voir ce qui se passe... mais une lumière ne s'allume pas (parce que sa femme n'entendait pas le bip), alors il savait où aller. `,
+        },
+        {
+          id: 3,
+          title: "Accessibilité = dignité",
+          text: `Le public sourd, malentendant ou sourdaveugle est très divers : chacun a son parcours et ses modes de communication. Certains utilisent la LSF, la LSF rapprochée, la LSF cadrée ou la LS tactile, d’autres la LFPC, la lecture labiale ou la parole. Certains portent des implants cochléaires, des appareils auditifs, d’autres aucun dispositif.  
+
+Pour que tous puissent participer pleinement, il est indispensable de mettre en place systématiquement des dispositifs d’accessibilité : interprètes LSF, transcription écrite, codeurs LFPC…  
+
+Accessibilité rime avec participation : comprendre, s’exprimer et être inclus, c’est possible pour chacun, quel que soit son parcours ou son mode de communication.`,
+        },
+      ];
+
+      const foundSet = new Set();
+
+      function updateFoundCounter() {
+        const counter = document.getElementById("foundCounter");
+        counter.textContent = `${foundSet.size} / ${anecdotes.length} trouvés`;
+      }
+
+      function showAnecdote(key) {
+        // key peut être 'intro' (badge) ou index numérique
+        let item = null;
+        if (key === "intro") {
+          item = {
+            title: "Découvrez des anecdotes",
+            text: "Bienvenue : explorez la carte, trouvez les boutons cachés et découvrez des anecdotes sur la surdité, la surdicécité et les malentendants.",
+            source: "UNANIMES",
+          };
+        } else {
+          item = anecdotes[key] || {
+            title: "Anecdote",
+            text: "Contenu indisponible.",
+            source: "",
+          };
+          // marquer comme trouvé
+          foundSet.add(item.id);
+        }
+        document.getElementById("modalTitle").textContent = item.title;
+        document.getElementById("modalText").textContent = item.text;
+        document.getElementById("modalSource").textContent = item.source
+          ? `— ${item.source}`
+          : "";
+        const modal = document.getElementById("surpriseModal");
+        modal.style.display = "block";
+        modal.setAttribute("aria-hidden", "false");
+        updateFoundCounter();
+        // petit confetti quand on débloque une vraie anecdote
+        if (typeof key === "number") createConfetti(30);
+      }
+
+      function closeAnecdote() {
+        const modal = document.getElementById("surpriseModal");
+        modal.style.display = "none";
+        modal.setAttribute("aria-hidden", "true");
+      }
+
+      function triggerSurprise() {
+        showAnecdote("intro");
+      }
+
+      function createConfetti(amount = 50) {
+        for (let i = 0; i < amount; i++) {
+          const confetti = document.createElement("div");
+          confetti.className = "confetti";
+          confetti.style.left = Math.random() * 100 + "%";
+          confetti.style.top = "-10px";
+          confetti.style.backgroundColor = [
+            "#ff3264",
+            "#00d4ff",
+            "#ff9600",
+            "#00ff88",
+            "#ff00ff",
+          ][Math.floor(Math.random() * 5)];
+          const size = Math.random() * 10 + 5;
+          confetti.style.width = size + "px";
+          confetti.style.height = size + "px";
+          confetti.style.borderRadius = "50%";
+          confetti.style.opacity = "0.95";
+          confetti.style.transition =
+            "transform 2.5s ease-out, opacity 2.5s ease-out";
+          document.body.appendChild(confetti);
+          // trajectoire simple
+          const tx = (Math.random() - 0.5) * 300;
+          const ty = Math.random() * 400 + 200;
+          requestAnimationFrame(() => {
+            confetti.style.transform = `translate(${tx}px, ${ty}px) rotate(${
+              Math.random() * 720
+            }deg)`;
+            confetti.style.opacity = "0";
+          });
+          setTimeout(() => confetti.remove(), 2800);
+        }
+      }
+
+      // Fermer modal au clic en dehors
+      window.onclick = function (event) {
+        const modal = document.getElementById("surpriseModal");
+        if (event.target === modal) closeAnecdote();
+      };
+
+      // Lancer feu d'artifice
+      createFireworks();
+      // initialiser compteur (au chargement)
+      updateFoundCounter();
+    </script>
+  </body>
+</html>
