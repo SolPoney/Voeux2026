@@ -11,7 +11,7 @@
         box-sizing: border-box;
       }
       body {
-        font-family: "Luciole", "Segoe UI", Tahoma, Helvetica, sans-serif;
+        font-family: 'Luciole', 'Segoe UI', Tahoma, Helvetica, sans-serif;
         background: linear-gradient(
           135deg,
           #0a0e27 0%,
@@ -159,6 +159,11 @@
         object-fit: cover;
         transition: transform 0.5s ease;
       }
+
+      .image-wrapper:focus-visible img {
+        border: 3px solid white;
+      }
+
       .image-wrapper:hover img {
         transform: scale(1.08) rotate(1deg);
       }
@@ -203,7 +208,9 @@
         cursor: pointer;
         box-shadow: 0 0 20px rgba(255, 150, 0, 0.5);
         transition: all 0.3s;
+        border: none;
       }
+      .surprise-badge:focus-visible,
       .surprise-badge:hover {
         transform: scale(1.2);
         box-shadow: 0 0 40px rgba(255, 150, 0, 0.8);
@@ -279,6 +286,8 @@
         opacity: 0;
         transition: all 0.3s;
       }
+
+      .hidden-button:has(button:focus-visible),
       .hidden-button:hover {
         opacity: 1;
       }
@@ -311,6 +320,8 @@
         transition: all 0.3s;
         font-weight: bold;
       }
+
+      .hidden-button button:focus-visible,
       .hidden-button button:hover {
         transform: scale(1.3);
         box-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
@@ -343,7 +354,7 @@
         overflow: hidden;
       }
       .button a::before {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: -100%;
@@ -381,14 +392,24 @@
           inset 0 1px 0 rgba(255, 255, 255, 0.3);
       }
       /* Modal anecdote */
-      .modal {
+      dialog {
         display: none;
         position: fixed;
         z-index: 1000;
         inset: 0;
-        background-color: rgba(0, 0, 0, 0.8);
         animation: fadeIn 0.3s;
+        background-color: rgba(0, 0, 0, 0.8);
+        left: 30%;
       }
+
+      dialog:open {
+        display: block;
+      }
+
+      dialog::backdrop {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -433,18 +454,25 @@
       }
       .close {
         color: #00d4ff;
+        border: 1px solid transparent;
+        background-color: transparent;
         position: absolute;
         right: 18px;
         top: 12px;
         font-size: 26px;
         font-weight: bold;
         cursor: pointer;
+        padding: 5px;
         transition: all 0.3s;
       }
+
+      .close:focus-visible,
       .close:hover {
         color: #00f5ff;
+        border-color: #00f5ff;
         transform: rotate(90deg);
       }
+
       .found-counter {
         position: absolute;
         left: 18px;
@@ -486,6 +514,19 @@
           padding: 6px 12px;
         }
       }
+
+      .sr-only {
+        border: 0 !important;
+        clip: rect(1px, 1px, 1px, 1px) !important;
+        -webkit-clip-path: inset(50%) !important;
+        clip-path: inset(50%) !important;
+        height: 1px !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+        position: absolute !important;
+        width: 1px !important;
+        white-space: nowrap !important;
+      }
     </style>
   </head>
   <body>
@@ -508,51 +549,50 @@
         class="image-wrapper"
         onclick="triggerSurprise()"
         role="button"
-        aria-label="Image interactive — cliquez"
+        tabindex="0"
       >
         <img src="Images/carte-voeux.png" alt="Carte de Vœux UNANIMES 2026" />
-        <div class="image-overlay">👆 Cliquez-moi ! 🎉</div>
+        <div class="image-overlay">
+          <span aria-hidden="true">👆</span> Cliquez-moi !
+          <span aria-hidden="true">🎉</span>
+        </div>
       </div>
 
       <div class="content">
         <!-- Badge surprise qui pulsent -->
-        <div
-          class="surprise-badge"
-          onclick="showAnecdote('intro')"
-          title="Cliquez ici !"
-          role="button"
-          aria-label="Badge surprise"
-        >
-          ✨ SURPRISE ✨
-        </div>
+        <button class="surprise-badge" onclick="showAnecdote('intro')">
+          <span aria-hidden="true">✨</span> SURPRISE
+          <span aria-hidden="true">✨</span>
+        </button>
 
         <!-- Boutons cachés aux coins -> ouvrent anecdotes -->
-        <div class="hidden-button top-left" aria-hidden="false">
-          <button aria-label="Anecdote 1 — Histoire" onclick="showAnecdote(0)">
-            🎈
+        <div class="hidden-button top-left">
+          <button onclick="showAnecdote(0)">
+            <span aria-hidden="true">🎈</span
+            ><span class="sr-only">Anecdote 1 — Histoire</span>
           </button>
         </div>
-        <div
-          class="hidden-button top-right"
-          aria-label="Anecdote 2 — Surdicécité"
-        >
-          <button onclick="showAnecdote(1)">🎊</button>
+        <div class="hidden-button top-right">
+          <button onclick="showAnecdote(1)">
+            <span aria-hidden="true">🎊</span>
+            <span class="sr-only">Anecdote 2 — Surdicécité</span>
+          </button>
         </div>
-        <div
-          class="hidden-button bottom-left"
-          aria-label="Anecdote 3 — Malentendants"
-        >
-          <button onclick="showAnecdote(2)">🎁</button>
+        <div class="hidden-button bottom-left">
+          <button onclick="showAnecdote(2)">
+            <span aria-hidden="true">🎁</span>
+            <span class="sr-only">Anecdote 3 — Malentendants</span>
+          </button>
         </div>
-        <div
-          class="hidden-button bottom-right"
-          aria-label="Anecdote 4 — Accessibilité"
-        >
-          <button onclick="showAnecdote(3)">⭐</button>
+        <div class="hidden-button bottom-right">
+          <button onclick="showAnecdote(3)">
+            <span aria-hidden="true">⭐</span>
+            <span class="sr-only">Anecdote 4 — Accessibilité</span>
+          </button>
         </div>
 
         <h1>Vœux 2026</h1>
-        <h1 class="subtitle">UNANIMES</h1>
+        <h2 class="subtitle">UNANIMES</h2>
 
         <p>
           Au nom de toute l'équipe d'UNANIMES, nous vous souhaitons une année
@@ -587,7 +627,8 @@
         <div class="buttons-group">
           <div class="button">
             <a href="https://www.unanimes.fr" target="_blank"
-              >✨ Visitez notre site</a
+              ><span aria-hidden="true">✨</span> Visitez notre site
+              <span class="sr-only">- Nouvel onglet</span></a
             >
           </div>
 
@@ -596,7 +637,8 @@
               href="https://www.helloasso.com/associations/unanimes/adhesions/adhesion"
               target="_blank"
             >
-              🚀 Adhérez à UNANIMES
+              <span aria-hidden="true">🚀</span> Adhérez à UNANIMES
+              <span class="sr-only">- Nouvel onglet</span>
             </a>
           </div>
         </div>
@@ -604,49 +646,52 @@
     </div>
 
     <!-- Modal Anecdote -->
-    <div
+    <dialog
       id="surpriseModal"
       class="modal"
       role="dialog"
-      aria-modal="true"
-      aria-hidden="true"
+      aria-describedby="foundCounter modalTitle modalText"
     >
       <div class="modal-content" role="document">
-        <div class="found-counter" id="foundCounter">0 / 4 trouvés</div>
-        <span class="close" aria-label="Fermer" onclick="closeAnecdote()"
-          >&times;</span
-        >
-        <h2 id="modalTitle">Surprise</h2>
+        <div class="found-counter" id="foundCounter">
+          <span>0 / 4 trouvés</span>
+        </div>
+        <button autofocus class="close" onclick="closeAnecdote()">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Fermer</span>
+        </button>
+
+        <h1 id="modalTitle">Surprise</h1>
         <p id="modalText">Contenu...</p>
         <p
           id="modalSource"
           style="font-size: 13px; color: #9fbfdc; margin-top: 12px"
         ></p>
       </div>
-    </div>
+    </dialog>
 
     <script>
       function createFireworks() {
-        const container = document.getElementById("fireworksContainer");
-        const colors = ["#ff3264", "#00d4ff", "#ff9600", "#00ff88", "#ff00ff"];
+        const container = document.getElementById('fireworksContainer');
+        const colors = ['#ff3264', '#00d4ff', '#ff9600', '#00ff88', '#ff00ff'];
         function createFirework(x, y) {
           for (let i = 0; i < 50; i++) {
-            const particle = document.createElement("div");
-            particle.className = "particle";
+            const particle = document.createElement('div');
+            particle.className = 'particle';
             const size = Math.random() * 4 + 2;
             const color = colors[Math.floor(Math.random() * colors.length)];
             const angle = (i / 50) * Math.PI * 2;
             const velocity = Math.random() * 300 + 200;
             const tx = Math.cos(angle) * velocity;
             const ty = Math.sin(angle) * velocity;
-            particle.style.left = x + "px";
-            particle.style.top = y + "px";
-            particle.style.width = size + "px";
-            particle.style.height = size + "px";
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
             particle.style.backgroundColor = color;
             particle.style.boxShadow = `0 0 ${size * 2}px ${color}`;
-            particle.style.setProperty("--tx", tx + "px");
-            particle.style.setProperty("--ty", ty + "px");
+            particle.style.setProperty('--tx', tx + 'px');
+            particle.style.setProperty('--ty', ty + 'px');
             particle.style.animation = `burst ${
               Math.random() * 1 + 0.8
             }s ease-out forwards`;
@@ -665,13 +710,13 @@
       const anecdotes = [
         {
           id: 0,
-          title: "Une histoire de langue",
-          text: "Beaucoup de gens pensent que la langue des signes est universelle… mais ce n’est pas le cas ! Chaque pays, et parfois même chaque région, a ses propres signes. Il existe une langue des signes bretonne. Cette diversité montre combien les langues des signes sont riches et vivantes, et combien il est important de les apprendre et de les respecter.  En France, la reconnaissance et l’enseignement de la LSF ont connu de grandes avancées. En 1991, la loi Fabius a favorisé le choix d’une éducation bilingue pour les enfants sourds, combinant la LSF et le français écrit ou oral, mettant fin à l’interdiction de la LSF en cours depuis le congrès de Milan. La loi du 11 février 2005 reconnaît officiellement la LSF comme « langue à part entière ». Aujourd’hui, de nombreux instituts et associations, publics ou privés, ont réintégré la LSF dans leur enseignement. Depuis 2008, la LSF est également proposée comme option au baccalauréat, permettant ainsi aux élèves de se former et de valoriser cette langue dans leur parcours scolaire.",
+          title: 'Une histoire de langue',
+          text: 'Beaucoup de gens pensent que la langue des signes est universelle… mais ce n’est pas le cas ! Chaque pays, et parfois même chaque région, a ses propres signes. Il existe une langue des signes bretonne. Cette diversité montre combien les langues des signes sont riches et vivantes, et combien il est important de les apprendre et de les respecter.  En France, la reconnaissance et l’enseignement de la LSF ont connu de grandes avancées. En 1991, la loi Fabius a favorisé le choix d’une éducation bilingue pour les enfants sourds, combinant la LSF et le français écrit ou oral, mettant fin à l’interdiction de la LSF en cours depuis le congrès de Milan. La loi du 11 février 2005 reconnaît officiellement la LSF comme « langue à part entière ». Aujourd’hui, de nombreux instituts et associations, publics ou privés, ont réintégré la LSF dans leur enseignement. Depuis 2008, la LSF est également proposée comme option au baccalauréat, permettant ainsi aux élèves de se former et de valoriser cette langue dans leur parcours scolaire.',
         },
         {
           id: 1,
           title:
-            "Vous connaissez tous Helen Keller, mais connaissez-vous Anne Sullivan ? ",
+            'Vous connaissez tous Helen Keller, mais connaissez-vous Anne Sullivan ? ',
           text: `Anne Sullivan, célèbre éducatrice, a été la guide et l'amie de Helen Keller, une jeune fille sourdaveugle, pendant 49 ans. Née en 1866, Anne surmonte de nombreux défis dès son enfance, dont des problèmes oculaires et la perte de son petit frère.
 
             Diplômée de l'école pour aveugles Perkins en 1886, elle devient la professeure d’Helen Keller en 1887. Dès les premières semaines, elle développe une méthode révolutionnaire : épeler les mots dans la paume de la main de Keller, associant le tactile à la signification des objets. Le 5 avril 1887, Helen comprend pour la première fois le mot "water" sous ses doigts, un tournant majeur dans son accès au langage.
@@ -680,12 +725,12 @@
         },
         {
           id: 2,
-          title: "Une astuce de couple",
+          title: 'Une astuce de couple',
           text: `Un couple de sourds fait un road trip sur une longue distance. Il se fait très tard dans la nuit et ils décident de s'enregistrer dans un hôtel pour la nuit. Ils s'enregistrent, montent dans leur chambre et commencent à s'installer lorsque le mari réalise qu'il a laissé quelque chose dans la voiture qu'il doit aller chercher. Il descend en courant à sa voiture et récupère ses affaires. Il réalise soudainement qu'il ne sait plus quelle est sa chambre. Il réfléchit un instant, puis ça lui revient. Il remonte dans la voiture et commence à klaxonner. BEEP BEEP BEEP. Encore et encore. De nombreuses lumières de l'hôtel s'allument alors que les personnes entendantes, agacées, se réveillent pour voir ce qui se passe... mais une lumière ne s'allume pas (parce que sa femme n'entendait pas le bip), alors il savait où aller. `,
         },
         {
           id: 3,
-          title: "Accessibilité = dignité",
+          title: 'Accessibilité = dignité',
           text: `Le public sourd, malentendant ou sourdaveugle est très divers : chacun a son parcours et ses modes de communication. Certains utilisent la LSF, la LSF rapprochée, la LSF cadrée ou la LS tactile, d’autres la LFPC, la lecture labiale ou la parole. Certains portent des implants cochléaires, des appareils auditifs, d’autres aucun dispositif.  
 
 Pour que tous puissent participer pleinement, il est indispensable de mettre en place systématiquement des dispositifs d’accessibilité : interprètes LSF, transcription écrite, codeurs LFPC…  
@@ -697,71 +742,71 @@ Accessibilité rime avec participation : comprendre, s’exprimer et être inclu
       const foundSet = new Set();
 
       function updateFoundCounter() {
-        const counter = document.getElementById("foundCounter");
+        const counter = document.getElementById('foundCounter');
         counter.textContent = `${foundSet.size} / ${anecdotes.length} trouvés`;
       }
 
       function showAnecdote(key) {
         // key peut être 'intro' (badge) ou index numérique
         let item = null;
-        if (key === "intro") {
+        if (key === 'intro') {
           item = {
-            title: "Découvrez des anecdotes",
-            text: "Bienvenue : explorez la carte, trouvez les boutons cachés et découvrez des anecdotes sur la surdité, la surdicécité et les malentendants.",
-            source: "UNANIMES",
+            title: 'Découvrez des anecdotes',
+            text: 'Bienvenue : explorez la carte, trouvez les boutons cachés et découvrez des anecdotes sur la surdité, la surdicécité et les malentendants.',
+            source: 'UNANIMES',
           };
         } else {
           item = anecdotes[key] || {
-            title: "Anecdote",
-            text: "Contenu indisponible.",
-            source: "",
+            title: 'Anecdote',
+            text: 'Contenu indisponible.',
+            source: '',
           };
           // marquer comme trouvé
           foundSet.add(item.id);
         }
-        document.getElementById("modalTitle").textContent = item.title;
-        document.getElementById("modalText").textContent = item.text;
-        document.getElementById("modalSource").textContent = item.source
+        document.getElementById('modalTitle').textContent = item.title;
+        document.getElementById('modalText').textContent = item.text;
+        document.getElementById('modalSource').textContent = item.source
           ? `— ${item.source}`
-          : "";
-        const modal = document.getElementById("surpriseModal");
-        modal.style.display = "block";
-        modal.setAttribute("aria-hidden", "false");
+          : '';
+        const modal = document.getElementById('surpriseModal');
+        //modal.style.display = 'block';
+        modal.showModal();
         updateFoundCounter();
         // petit confetti quand on débloque une vraie anecdote
-        if (typeof key === "number") createConfetti(30);
+        if (typeof key === 'number') createConfetti(30);
       }
 
       function closeAnecdote() {
-        const modal = document.getElementById("surpriseModal");
-        modal.style.display = "none";
-        modal.setAttribute("aria-hidden", "true");
+        const modal = document.getElementById('surpriseModal');
+        //modal.style.display = 'none';
+        modal.close();
       }
 
       function triggerSurprise() {
-        showAnecdote("intro");
+        showAnecdote('intro');
       }
 
       function createConfetti(amount = 50) {
         for (let i = 0; i < amount; i++) {
-          const confetti = document.createElement("div");
-          confetti.className = "confetti";
-          confetti.style.left = Math.random() * 100 + "%";
-          confetti.style.top = "-10px";
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = Math.random() * 100 + '%';
+          confetti.style.top = '-10px';
           confetti.style.backgroundColor = [
-            "#ff3264",
-            "#00d4ff",
-            "#ff9600",
-            "#00ff88",
-            "#ff00ff",
+            '#ff3264',
+            '#00d4ff',
+            '#ff9600',
+            '#00ff88',
+            '#ff00ff',
           ][Math.floor(Math.random() * 5)];
           const size = Math.random() * 10 + 5;
-          confetti.style.width = size + "px";
-          confetti.style.height = size + "px";
-          confetti.style.borderRadius = "50%";
-          confetti.style.opacity = "0.95";
+          confetti.style.width = size + 'px';
+          confetti.style.height = size + 'px';
+          confetti.style.borderRadius = '50%';
+          confetti.style.opacity = '0.95';
           confetti.style.transition =
-            "transform 2.5s ease-out, opacity 2.5s ease-out";
+            'transform 2.5s ease-out, opacity 2.5s ease-out';
           document.body.appendChild(confetti);
           // trajectoire simple
           const tx = (Math.random() - 0.5) * 300;
@@ -770,7 +815,7 @@ Accessibilité rime avec participation : comprendre, s’exprimer et être inclu
             confetti.style.transform = `translate(${tx}px, ${ty}px) rotate(${
               Math.random() * 720
             }deg)`;
-            confetti.style.opacity = "0";
+            confetti.style.opacity = '0';
           });
           setTimeout(() => confetti.remove(), 2800);
         }
@@ -778,7 +823,7 @@ Accessibilité rime avec participation : comprendre, s’exprimer et être inclu
 
       // Fermer modal au clic en dehors
       window.onclick = function (event) {
-        const modal = document.getElementById("surpriseModal");
+        const modal = document.getElementById('surpriseModal');
         if (event.target === modal) closeAnecdote();
       };
 
